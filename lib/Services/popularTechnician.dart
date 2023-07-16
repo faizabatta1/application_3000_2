@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class PopularTechnicianService {
-  static const String baseUrl = 'https://technicians,onrender.com/popularTechnicians';
+  static const String baseUrl = 'https://technicians.onrender.com/popularTechnicians';
 
   // Fetch all popular technicians
   static Future<List<dynamic>> getAllPopularTechnicians() async {

@@ -250,10 +250,9 @@ class _employeeProfile extends State<employeeProfile> {
     );
   }
   void SendMessageByWatsapp()async{
-
-
-    await  launch('https://wa.me/${widget.tech['phone']}?text=hello');
-
+    if(await canLaunch('https://wa.me/${widget.tech['phone']}')){
+      await launch('https://wa.me/${widget.tech['phone']}');
+    }
   }
   void SendMail()async{
     String email = 'omarsabry8989@gmail.com';

@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class ReservationService {
-  static const String baseUrl = 'https://technicians,onrender.com'; // Replace with your API base URL
+  static const String baseUrl = 'https://technicians.onrender.com'; // Replace with your API base URL
 
   // Create a new reservation
   static Future<dynamic> createReservation(String userId, String technicianId, String date, int time) async {
@@ -51,7 +51,7 @@ class ReservationService {
   static Future<List<dynamic>> getUserReservations(String userId) async {
     try {
       // Make API request to get user reservations
-      final response = await http.get(Uri.parse('https://technicians,onrender.com/reservations/user/$userId'));
+      final response = await http.get(Uri.parse('https://technicians.onrender.com/reservations/user/$userId'));
 
       if (response.statusCode == 200) {
         // Parse response JSON

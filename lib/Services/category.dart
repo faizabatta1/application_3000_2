@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class CategoryService {
-  static const String baseURL = 'https://technicians,onrender.com';
+  static const String baseURL = 'https://technicians.onrender.com';
 
   static Future<List<dynamic>> getAllCategories() async {
     final url = Uri.parse('$baseURL/categories');

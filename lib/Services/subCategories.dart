@@ -4,7 +4,7 @@ import 'dart:convert';
 class SubCategoriesService{
   static Future<List> getAllSubCategories({ required String parentCategory }) async{
     try{
-      var uri = Uri.parse('https://technicians,onrender.com/subCategories/$parentCategory');
+      var uri = Uri.parse('https://technicians.onrender.com/subCategories/$parentCategory');
       http.Response response = await http.get(uri);
       List subCategories = jsonDecode(response.body);
 
@@ -17,7 +17,7 @@ class SubCategoriesService{
 
   static Future<({List technicians, String? message})> getAllSubCategoriesTechnicians({ required String subCategoryId }) async{
     try{
-      var uri = Uri.parse('https://technicians,onrender.com/subCategories/$subCategoryId/technicians');
+      var uri = Uri.parse('https://technicians.onrender.com/subCategories/$subCategoryId/technicians');
       http.Response response = await http.get(uri);
       List subCategories = jsonDecode(response.body);
 
