@@ -259,7 +259,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 color: Colors.white,
                                   image: DecorationImage(
                                       image: CachedNetworkImageProvider(snapshot.data[index]['image']),
-                                  fit: BoxFit.cover
+                                  fit: BoxFit.fill
                                   ),
                                   boxShadow: [
                                   BoxShadow(
@@ -281,6 +281,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                 padding: EdgeInsets.all(4.0),
                                   decoration: BoxDecoration(
+                                    color: Colors.black45,
                                     borderRadius: BorderRadius.only(
                                       bottomLeft: Radius.circular(8.0),
                                       bottomRight: Radius.circular(8.0),

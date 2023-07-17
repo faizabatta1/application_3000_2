@@ -14,7 +14,7 @@ class About extends StatelessWidget {
 
   Future <String> getAbout () async {
     try{
-      http.Response response = await http.get(Uri.parse("https://technicians.onrender.com/informations/about"));
+      http.Response response = await http.get(Uri.parse("http://10.0.2.2:3000/informations/about"));
       return response.body;
     } catch(error){
       return "error";
@@ -23,9 +23,17 @@ class About extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: AppColor.AppColors,
+        leading: IconButton(
+          onPressed: (){
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back_ios,size: 30,color: Colors.white,),
+        ),
+      ),
       body: Directionality(
-        textDirection: context.locale.languageCode == 'en' ? TextDirection.ltr : TextDirection.rtl,
+        textDirection: TextDirection.rtl,
         child: FutureBuilder(
 
            future: getAbout(),

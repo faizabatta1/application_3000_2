@@ -20,13 +20,17 @@ class _ProductsScreenState extends State<ProductsScreen> {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(60),
         child: Container(
-          color:AppColor.AppColors,
+          color: AppColor.AppColors,
           alignment: Alignment.centerLeft,
           child: IconButton(
-            onPressed: (){
+            onPressed: () {
               Navigator.pop(context);
             },
-            icon: Icon(Icons.arrow_back_ios,size: 30,color: Colors.white,),
+            icon: Icon(
+              Icons.arrow_back_ios,
+              size: 30,
+              color: Colors.white,
+            ),
           ),
         ),
       ),
@@ -60,92 +64,96 @@ class _ProductsScreenState extends State<ProductsScreen> {
 
             return Container(
               margin: EdgeInsets.all(12.0),
-              child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 12.0,
-                  mainAxisSpacing: 12.0,
-                  childAspectRatio: 8/9
-                ),
+              child: ListView.builder(
                 physics: BouncingScrollPhysics(),
                 itemCount: snapshot.data.length,
-                scrollDirection: Axis.vertical,
                 itemBuilder: (context, index) {
                   return Container(
+                    width: double.infinity,
+                    height: 300,
+                    margin: EdgeInsets.all(8.0),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(12.0),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 6,
-                          offset: Offset(0, 3),
+                          color: Colors.black12,
+                          blurRadius: 2,
+                          offset: Offset(-3, 3),
                         ),
                       ],
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: double.infinity,
-                          alignment: Alignment.center,
-                          child: Container(
-                            width: 80,
-                            height: 80,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: double.infinity,
                             alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(12.0),
-                                topLeft: Radius.circular(12.0),
-                              ),
-                              image: DecorationImage(
-                                image: CachedNetworkImageProvider(
-                                  snapshot.data[index]['image'],
+                            child: Container(
+                              width: 80,
+                              height: 80,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(12.0),
+                                  topLeft: Radius.circular(12.0),
                                 ),
-                                fit: BoxFit.cover,
+                                image: DecorationImage(
+                                  image: CachedNetworkImageProvider(
+                                    snapshot.data[index]['image'],
+                                  ),
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            snapshot.data[index]['name'],
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
+                          SizedBox(height: 8.0),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: Text(
+                                snapshot.data[index]['name'],
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Text(
-                            snapshot.data[index]['description'],
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey,
+                          SizedBox(height: 8.0),
+                          Flexible(
+                            fit: FlexFit.loose,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: Text(
+                                snapshot.data[index]['description'],
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey,
+                                ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Row(
+                          SizedBox(height: 8.0),
+                          Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                '\$${snapshot.data[index]['price']}',
+                                '${snapshot.data[index]['price']} sr',
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              ElevatedButton(
+                              TextButton(
                                 onPressed: () async {
                                   String productLink = snapshot.data[index]['link'];
                                   if (productLink.isNotEmpty) {
-                                    if(await canLaunchUrl(Uri.parse(productLink))){
+                                    if (await canLaunchUrl(Uri.parse(productLink))) {
                                       await launchUrl(Uri.parse(productLink));
                                     }
                                   }
@@ -154,21 +162,12 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                   'Show More',
                                   style: TextStyle(fontSize: 14),
                                 ).tr(),
-                                style: ElevatedButton.styleFrom(
-                                  primary: Colors.blue,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12.0),
-                                  ),
-                                  padding: EdgeInsets.symmetric(
-                                    vertical: 8.0,
-                                    horizontal: 12.0,
-                                  ),
-                                ),
+
                               ),
                             ],
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   );
                 },

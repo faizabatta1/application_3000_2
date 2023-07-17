@@ -25,37 +25,43 @@ class _LanguagesState extends State<Languages> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ElevatedButton(
-                onPressed: () async {
-                  await context.setLocale(Locale('en', ''));
-                },
-                style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(vertical: 16.0),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12.0),
+              SizedBox(
+                height: 60,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    await context.setLocale(Locale('en', ''));
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(vertical: 16.0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    primary: AppColor.AppColors,
                   ),
-                  primary: AppColor.AppColors,
-                ),
-                child: Text(
-                  "English",
-                  style: TextStyle(fontSize: 18),
+                  child: Text(
+                    "English",
+                    style: TextStyle(fontSize: 18),
+                  ),
                 ),
               ),
               SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () async {
-                  await context.setLocale(Locale('ar', ''));
-                },
-                style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(vertical: 16.0),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12.0),
+              SizedBox(
+                height: 60,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    await context.setLocale(Locale('ar', ''));
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(vertical: 16.0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    primary: AppColor.AppColors,
                   ),
-                  primary: AppColor.AppColors,
-                ),
-                child: Text(
-                  "العربية",
-                  style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),
+                  child: Text(
+                    "العربية",
+                    style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),
+                  ),
                 ),
               ),
             ],
