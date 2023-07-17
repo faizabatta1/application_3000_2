@@ -3,15 +3,15 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 
 class TechnicianService {
-  static const String baseUrl = 'http://10.0.2.2:3000'; // Replace with your API base URL
+  static const String baseUrl = 'https://technicians.onrender.com'; // Replace with your API base URL
 
   // Get all technicians
   static Future<List<dynamic>> getAllTechnicians({String? categoryId}) async {
     Uri ?url;
     if(categoryId == null){
-      url = Uri.parse('http://10.0.2.2:3000/technicians');
+      url = Uri.parse('https://technicians.onrender.com/technicians');
     }else{
-      url = Uri.parse('http://10.0.2.2:3000/technicians/?categoryId=$categoryId');
+      url = Uri.parse('https://technicians.onrender.com/technicians/?categoryId=$categoryId');
     }
 
     print(url);

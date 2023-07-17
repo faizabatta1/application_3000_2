@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserService {
-  static const String baseUrl = 'http://10.0.2.2:3000'; // Replace with your API URL
+  static const String baseUrl = 'https://technicians.onrender.com'; // Replace with your API URL
 
   // Method to send a reset password email
   static Future<String> sendResetPasswordEmail(String email) async {
@@ -109,7 +109,7 @@ class UserService {
   }
 
   static Future<List<dynamic>> getAllFavoriteTechnicians(List techs) async {
-    final url = Uri.parse('http://10.0.2.2:3000/users/favorites');
+    final url = Uri.parse('https://technicians.onrender.com/users/favorites');
     final headers = {'Content-Type': 'application/json; charset=utf-8'};
     final body = {'techs': jsonEncode(techs)};
 
@@ -129,7 +129,7 @@ class UserService {
   }
 
   static Future<List<dynamic>> createFavoriteTech(String userId, String id) async {
-    final url = Uri.parse('http://10.0.2.2:3000/users/favorites/create');
+    final url = Uri.parse('https://technicians.onrender.com/users/favorites/create');
     final headers = {'Content-Type': 'application/json'};
     final body = {'userId': userId, 'id': id};
 
@@ -148,7 +148,7 @@ class UserService {
   }
 
   static Future<List<dynamic>> deleteFavoriteTech(String userId, String id) async {
-    final url = Uri.parse('http://10.0.2.2:3000/users/favorites/$id');
+    final url = Uri.parse('https://technicians.onrender.com/users/favorites/$id');
     final headers = {'Content-Type': 'application/json'};
     final body = {'userId': userId};
 

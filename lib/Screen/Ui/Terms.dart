@@ -12,7 +12,7 @@ class Terms extends StatelessWidget {
 
   Future <String> getTerms () async {
     try{
-      http.Response response = await http.get(Uri.parse("http://10.0.2.2:3000/informations/terms"));
+      http.Response response = await http.get(Uri.parse("https://technicians.onrender.com/informations/terms"));
       return response.body;
     } catch(error){
       return "error";
