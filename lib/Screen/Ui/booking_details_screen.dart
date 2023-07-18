@@ -149,7 +149,7 @@ class BookingDetailsScreen extends StatelessWidget {
                 ),
               ).tr(),
               Text(
-                '\$${bookingData['technicianId']['price']}',
+                '${bookingData['technicianId']['price']} SAR',
                 style: TextStyle(fontSize: 16),
               ),
               SizedBox(height: 8),

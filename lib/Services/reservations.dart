@@ -17,11 +17,12 @@ class ReservationService {
       }),
     );
 
+    print(response.statusCode);
+
     if (response.statusCode == 201) {
-      final String reservation = response.body;
-      return (message: reservation);
-    } else{
       return (message: null);
+    } else{
+      return (message: "Something Went Wrong");
     }
   }
 

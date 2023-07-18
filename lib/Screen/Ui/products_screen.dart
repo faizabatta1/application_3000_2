@@ -142,7 +142,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                '${snapshot.data[index]['price']} sr',
+                                '${snapshot.data[index]['price']} SAR',
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,

@@ -1,6 +1,7 @@
 
 import 'dart:convert';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -129,6 +130,13 @@ class _BookingScreenState extends State<BookingScreen> {
                                                   child: Column(
                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                     children: [
+                      AutoSizeText(
+                      "code: ${rss.data!.reservations[index]['_id']}",
+                      style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      ),maxLines:1
+                      ),
                                                       Text(
                                                         "${rss.data!.reservations[index]['technicianId']['category']['name']}",
                                                         style: TextStyle(
@@ -144,6 +152,10 @@ class _BookingScreenState extends State<BookingScreen> {
                                                           color: Colors.grey,
                                                         ),
                                                       ),
+
+                                                      Text('${rss.data!.reservations[index]['date']}  ${rss.data!.reservations[index]['time']}${int.parse(rss.data!.reservations[index]['time']) <= 12 ? "AM" : "PM"}   ${rss.data!.reservations[index]['status']}',style:TextStyle(
+                      color:rss.data!.reservations[index]['status'] == "pending" ? Colors.red : Colors.green
+                      ))
                                                     ],
                                                   ),
                                                 ),

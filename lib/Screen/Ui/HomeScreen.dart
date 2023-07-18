@@ -310,19 +310,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       bottomRight: Radius.circular(8.0),
                                     )
                                   ),
-                                  child: FutureBuilder(
-                                    future: GoogleTranslator().translate(snapshot.data[index]['name'],to: context.locale.languageCode),
-                                    builder: (context,AsyncSnapshot<Translation> trans){
-                                      if(trans.connectionState == ConnectionState.waiting){
-                                        return Center(
-                                          child: CircularProgressIndicator(),
-                                        );
-                                      }
-
-                                      return Text("${trans.data!.text}" ,
-                                        style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white,fontSize: 20),).tr();
-                                    },
-                                  )),
+                                  child: Text("${snapshot.data[index]['name']}" ,
+                                    style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white,fontSize: 20),).tr()),
                             ),
                           );
                         });

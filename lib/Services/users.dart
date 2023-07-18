@@ -85,9 +85,11 @@ class UserService {
     try{
       final url = Uri.parse('$baseUrl/users/login');
       String ?token = await FirebaseMessaging.instance.getToken();
+
+      print(token);
       final response = await http.post(
         url,
-        body: jsonEncode({'email': email, 'password': password, 'token' : token}),
+        body: jsonEncode({'email': email, 'password': password, 'deviceToken' : token}),
         headers: {'Content-Type': 'application/json'},
       );
 
@@ -108,20 +110,23 @@ class UserService {
     }
   }
 
-  static Future<({ List<dynamic> techs,String? errorMessage })> getAllFavoriteTechnicians(List techs) async {
-    final url = Uri.parse('https://technicians.onrender.com/users/favorites');
-    final headers = {'Content-Type': 'application/json; charset=utf-8'};
-    final body = {'techs': jsonEncode(techs)};
+  static Future<({ List<dynamic> techs,String? errorMessage })> getAllFavoriteTechnicians() async {
 
     try {
-      final response = await http.post(url, headers: headers, body: jsonEncode(body));
-      print(response.statusCode);
+      final url = Uri.parse('https://technicians.onrender.com/users/user/favorites');
+      final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+      final String token = sharedPreferences.getString('token')!;
+      final headers = {
+        'token': token
+      };
+      final response = await http.get(url, headers: headers);
 
       if (response.statusCode == 200) {
         final List<dynamic> techsArr = jsonDecode(response.body);
         print(techsArr);
         return (techs:techsArr, errorMessage: null);
       } else {
+        print(response.body);
         return (techs:[], errorMessage:"Server Error");
       }
     } catch (error) {
@@ -237,6 +242,24 @@ class UserService {
     } else {
       print("so that has ereror ???");
       throw Exception('Failed to upload user image');
+    }
+  }
+
+  static Future<({ List notifications, String? errorMessage})> getUserNotifications() async{
+    try{
+      final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+      String token = sharedPreferences.getString('token')!;
+      final Uri uri = Uri.parse("$baseUrl/users/user/notifications");
+
+      http.Response response = await http.get(uri,headers: {
+        'token': token
+      });
+
+      List notifications = jsonDecode(response.body);
+
+      return (notifications : notifications, errorMessage: null);
+    }catch(error){
+      return (notifications : [], errorMessage: "");
     }
   }
 }

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:zainlak_tech/Constant/AppColor.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:zainlak_tech/Services/users.dart';
 
 import '../../Provider/UserProvider.dart';
 
@@ -30,17 +31,17 @@ class NotificationsScreen extends StatelessWidget {
         // drawer: Drawer(
         //   child: DrawerScreen(),
         // ),
-        body: FutureBuilder(
-          future:  SharedPreferences.getInstance(),
+        body: FutureBuilder<({ List notifications, String? errorMessage})>(
+          future:  UserService.getUserNotifications(),
 
-          builder: (BuildContext context, AsyncSnapshot<SharedPreferences> snapshot) {
+          builder: (BuildContext context, AsyncSnapshot<({ List notifications, String? errorMessage})> snapshot) {
             if(snapshot.connectionState == ConnectionState.waiting){
               return Center(child: CircularProgressIndicator(
                 color: AppColor.AppColors,
               ));
             }
-            if(snapshot!=null){
-              List notifications = jsonDecode(snapshot.data!.getString('user')!)['notifications'];
+            if(snapshot.data != null){
+              List notifications = snapshot.data!.notifications;
 
               if(notifications.isEmpty){
                 return Center(child: Text("Notifications is empty now").tr());

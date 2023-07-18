@@ -15,21 +15,7 @@ class FavouriteScreen extends StatefulWidget {
 }
 
 class _FavouriteScreenState extends State<FavouriteScreen> {
-  List techs = [];
 
-  void getAllTechs() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    String? decoded = sharedPreferences.getString('user');
-    Map<String, dynamic> user = jsonDecode(decoded!);
-    setState(() {
-      techs = user['favorites'];
-    });
-  }
-
-  void initState() {
-    super.initState();
-    getAllTechs();
-  }
 
   Widget build(BuildContext context) {
     return SafeArea(
@@ -52,7 +38,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                   height: 700,
                   child: FutureBuilder<
                       ({List<dynamic> techs, String? errorMessage})>(
-                    future: UserService.getAllFavoriteTechnicians(techs),
+                    future: UserService.getAllFavoriteTechnicians(),
                     builder: (context,
                         AsyncSnapshot<
                                 ({List<dynamic> techs, String? errorMessage})>
@@ -67,7 +53,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                         if (snapshot.data!.errorMessage != null) {
                           return Center(
                             child: Text(
-                              "Network Error",
+                              snapshot.data!.errorMessage.toString(),
                               style: TextStyle(
         fontSize: 20,
         color: Colors.black,
