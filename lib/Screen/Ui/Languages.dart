@@ -30,6 +30,7 @@ class _LanguagesState extends State<Languages> {
                 child: ElevatedButton(
                   onPressed: () async {
                     await context.setLocale(Locale('en', ''));
+                    setState(() {});
                   },
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.symmetric(vertical: 16.0),
@@ -50,6 +51,7 @@ class _LanguagesState extends State<Languages> {
                 child: ElevatedButton(
                   onPressed: () async {
                     await context.setLocale(Locale('ar', ''));
+                    setState((){});
                   },
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.symmetric(vertical: 16.0),

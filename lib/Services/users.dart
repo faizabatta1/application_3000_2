@@ -108,7 +108,7 @@ class UserService {
     }
   }
 
-  static Future<List<dynamic>> getAllFavoriteTechnicians(List techs) async {
+  static Future<({ List<dynamic> techs,String? errorMessage })> getAllFavoriteTechnicians(List techs) async {
     final url = Uri.parse('https://technicians.onrender.com/users/favorites');
     final headers = {'Content-Type': 'application/json; charset=utf-8'};
     final body = {'techs': jsonEncode(techs)};
@@ -119,12 +119,13 @@ class UserService {
 
       if (response.statusCode == 200) {
         final List<dynamic> techsArr = jsonDecode(response.body);
-        return techsArr;
+        print(techsArr);
+        return (techs:techsArr, errorMessage: null);
       } else {
-        throw Exception('Failed to get favorite technicians');
+        return (techs:[], errorMessage:"Server Error");
       }
     } catch (error) {
-      throw Exception('Network error: $error');
+      return (techs:[],errorMessage:"Network Error");
     }
   }
 

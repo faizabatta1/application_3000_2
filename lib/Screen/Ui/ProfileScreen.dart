@@ -70,7 +70,7 @@ class ProfileScreen extends StatefulWidget {
                                   SizedBox(height: 40,),
                                   Text('Contact Info',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),).tr(),
                                   SizedBox(height: 20,),
-                                  Text("ُُEmail",style: TextStyle(color: Colors.black,fontSize: 18),).tr(args: [user['email']]),
+                                  Text("Email",style: TextStyle(color: Colors.black,fontSize: 18),).tr(args: [user['email']]),
                                   SizedBox(height: 15,),
                                    Text('location',style: TextStyle(color: Colors.black,fontSize: 18),).tr(args: [user['location']]),
 

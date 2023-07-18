@@ -50,123 +50,152 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                 SizedBox(height: 20),
                 SizedBox(
                   height: 700,
-                  child: FutureBuilder(
+                  child: FutureBuilder<
+                      ({List<dynamic> techs, String? errorMessage})>(
                     future: UserService.getAllFavoriteTechnicians(techs),
-                    builder: (context, AsyncSnapshot snapshot) {
-                      if(snapshot.connectionState == ConnectionState.waiting){
+                    builder: (context,
+                        AsyncSnapshot<
+                                ({List<dynamic> techs, String? errorMessage})>
+                            snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
                         return Center(
                           child: CircularProgressIndicator(),
                         );
                       }
 
                       if (snapshot.data != null) {
-                        return snapshot.data.isEmpty
+                        if (snapshot.data!.errorMessage != null) {
+                          return Center(
+                            child: Text(
+                              "Network Error",
+                              style: TextStyle(
+        fontSize: 20,
+        color: Colors.black,
+        fontWeight: FontWeight.bold
+        ),
+                            ),
+                          );
+                        }
+
+                        return snapshot.data!.techs.isEmpty
                             ? Center(
-                          child: Text(
-                            'No Favourites Yet',
-                            style: TextStyle(fontSize: 24),
-                          ).tr(),
-                        )
+                                child: Text(
+                                  'No Favourites Yet',
+                                  style: TextStyle(fontSize: 24),
+                                ).tr(),
+                              )
                             : ListView.builder(
-                          itemCount: snapshot.data.length,
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        employeeProfile(tech: snapshot.data[index]),
-                                  ),
-                                );
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.only(bottom: 20),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Colors.white,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.1),
-                                        blurRadius: 6,
-                                        offset: Offset(0, 3),
-                                      ),
-                                    ],
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.circular(10),
-                                        child: CachedNetworkImage(
-                                          imageUrl: snapshot.data[index]['image'],
-                                          placeholder: (context, url) =>
-                                              CircularProgressIndicator(),
-                                          errorWidget: (context, url, error) =>
-                                              Icon(Icons.error),
-                                          width: 100,
-                                          height: 100,
-                                          fit: BoxFit.cover,
+                                itemCount: snapshot.data!.techs.length,
+                                itemBuilder: (context, index) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) => employeeProfile(
+                                              tech:
+                                                  snapshot.data!.techs[index]),
                                         ),
-                                      ),
-                                      SizedBox(width: 10),
-                                      Expanded(
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(vertical: 10),
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "${snapshot.data[index]['name']}",
-                                                style: TextStyle(
-                                                  fontSize: 22,
-                                                  fontWeight: FontWeight.bold,
+                                      );
+                                    },
+                                    child: Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 20),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          color: Colors.white,
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.black.withOpacity(0.1),
+                                              blurRadius: 6,
+                                              offset: Offset(0, 3),
+                                            ),
+                                          ],
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              child: CachedNetworkImage(
+                                                imageUrl: snapshot.data!
+                                                    .techs[index]['image'],
+                                                placeholder: (context, url) =>
+                                                    CircularProgressIndicator(),
+                                                errorWidget:
+                                                    (context, url, error) =>
+                                                        Icon(Icons.error),
+                                                width: 100,
+                                                height: 100,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                            SizedBox(width: 10),
+                                            Expanded(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 10),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      "${snapshot.data!.techs[index]['name']}",
+                                                      style: TextStyle(
+                                                        fontSize: 22,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                    SizedBox(height: 4),
+                                                    Text(
+                                                      "${snapshot.data!.techs[index]['category']['name']}",
+                                                      style: TextStyle(
+                                                        fontSize: 18,
+                                                        color: Colors.grey,
+                                                      ),
+                                                    ),
+                                                    SizedBox(height: 8),
+                                                    Row(
+                                                      children: [
+                                                        Icon(
+                                                          Icons.star,
+                                                          color: Colors.orange,
+                                                          size: 20,
+                                                        ),
+                                                        SizedBox(width: 4),
+                                                        Text(
+                                                          "4.5",
+                                                          style: TextStyle(
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                        SizedBox(width: 4),
+                                                        Text(
+                                                          "(50 Reviews)",
+                                                          style: TextStyle(
+                                                            fontSize: 14,
+                                                            color: Colors.grey,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
-                                              SizedBox(height: 4),
-                                              Text(
-                                                "${snapshot.data[index]['category']['name']}",
-                                                style: TextStyle(
-                                                  fontSize: 18,
-                                                  color: Colors.grey,
-                                                ),
-                                              ),
-                                              SizedBox(height: 8),
-                                              Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons.star,
-                                                    color: Colors.orange,
-                                                    size: 20,
-                                                  ),
-                                                  SizedBox(width: 4),
-                                                  Text(
-                                                    "4.5",
-                                                    style: TextStyle(
-                                                      fontSize: 16,
-                                                      fontWeight: FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                  SizedBox(width: 4),
-                                                  Text(
-                                                    "(50 Reviews)",
-                                                    style: TextStyle(
-                                                      fontSize: 14,
-                                                      color: Colors.grey,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        );
+                                    ),
+                                  );
+                                },
+                              );
                       }
 
                       return Text('');

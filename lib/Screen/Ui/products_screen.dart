@@ -110,31 +110,30 @@ class _ProductsScreenState extends State<ProductsScreen> {
                             ),
                           ),
                           SizedBox(height: 8.0),
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: Text(
-                                snapshot.data[index]['name'],
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Text(
+                              snapshot.data[index]['name'],
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
                               ),
                             ),
                           ),
-                          SizedBox(height: 8.0),
-                          Flexible(
-                            fit: FlexFit.loose,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: Text(
-                                snapshot.data[index]['description'],
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.grey,
+                          SizedBox(height: 8,),
+                          Expanded(
+                            child: SingleChildScrollView(
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Text(
+                                  snapshot.data[index]['description'],
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.grey,
+                                  ),
+                                  maxLines: 3,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                           ),

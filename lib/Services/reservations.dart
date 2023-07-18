@@ -5,7 +5,7 @@ class ReservationService {
   static const String baseUrl = 'https://technicians.onrender.com'; // Replace with your API base URL
 
   // Create a new reservation
-  static Future<dynamic> createReservation(String userId, String technicianId, String date, int time) async {
+  static Future<({ String? message })> createReservation(String userId, String technicianId, String date, int time) async {
     final response = await http.post(
       Uri.parse('$baseUrl/reservations'),
       headers: {'Content-Type': 'application/json'},
@@ -19,9 +19,9 @@ class ReservationService {
 
     if (response.statusCode == 201) {
       final String reservation = response.body;
-      return reservation;
+      return (message: reservation);
     } else{
-      return throw response.body;
+      return (message: null);
     }
   }
 
@@ -48,7 +48,7 @@ class ReservationService {
     }
   }
 
-  static Future<List<dynamic>> getUserReservations(String userId) async {
+  static Future<({ List<dynamic> reservations, String? errorMessage })> getUserReservations(String userId) async {
     try {
       // Make API request to get user reservations
       final response = await http.get(Uri.parse('https://technicians.onrender.com/reservations/user/$userId'));
@@ -57,12 +57,12 @@ class ReservationService {
         // Parse response JSON
         final List<dynamic> reservations = json.decode(response.body);
 
-        return reservations;
+        return ( reservations: reservations, errorMessage: null );
       } else {
-        throw Exception('Failed to get user reservations');
+        return ( reservations: [], errorMessage: "Server Error" ) ;
       }
     } catch (error) {
-      throw Exception('Failed to connect and get user reservations: $error');
+      return ( reservations: [], errorMessage: "Network Error" ) ;
     }
   }
 

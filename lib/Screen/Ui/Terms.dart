@@ -47,7 +47,13 @@ class Terms extends StatelessWidget {
                   child: Text('Data is null'),
                 );
               }
-              return Text("${snapshot.data}");
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text("${snapshot.data}",style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500
+                ),),
+              );
             } ,
 
           ),

@@ -1,14 +1,21 @@
 
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:translator/translator.dart';
 
 import '../../Constant/AppColor.dart';
 import '../../Services/category.dart';
@@ -18,6 +25,7 @@ import 'DetailsScreen.dart';
 import 'Employee_Profile.dart';
 import 'Notification_Screen.dart';
 import 'ProfileScreen.dart';
+import 'no_network_screen.dart';
 
 class HomeScreen extends StatefulWidget {
 
@@ -28,6 +36,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+
 
 
 
@@ -221,10 +231,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
             Padding(
               padding: const EdgeInsets.only(left: 12.0),
-              child: Text("Welcome To Zainlak",style: TextStyle(
+              child: AutoSizeText("Welcome To Zainlak".tr(),style: TextStyle(
                 fontSize: 26,
                 fontWeight: FontWeight.bold
-              ),).tr(),
+              ),maxLines: 1,),
             ),
 
             Padding(
@@ -241,7 +251,25 @@ class _HomeScreenState extends State<HomeScreen> {
               child: FutureBuilder(
                 future: CategoryService.getAllCategories(),
                 builder: (context,AsyncSnapshot snapshot){
+                  if(snapshot.connectionState == ConnectionState.waiting){
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+
+                  if(snapshot.hasError){
+                    return Center(
+                      child: Text("Something Went Wrong"),
+                    );
+                  }
+
                   if(snapshot.data != null){
+                    if(snapshot.data.isEmpty){
+                      return Center(
+                        child: Text("No Categories Yet"),
+                      );
+                    }
+
                     return ListView.builder(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
@@ -264,13 +292,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   boxShadow: [
                                   BoxShadow(
                                     offset: Offset(-3,3),
-                                    blurRadius: 0,
-                                    color: Colors.black12
-                                  ),
-                                  BoxShadow(
-                                      offset: Offset(3,-3),
-                                      blurRadius: 0,
-                                      color: Colors.black12
+                                    blurRadius: 2,
+                                    color: Colors.transparent
                                   ),
                                 ]
                               ),
@@ -281,14 +304,25 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                 padding: EdgeInsets.all(4.0),
                                   decoration: BoxDecoration(
-                                    color: Colors.black45,
+                                    color: Colors.black.withOpacity(0.1),
                                     borderRadius: BorderRadius.only(
                                       bottomLeft: Radius.circular(8.0),
                                       bottomRight: Radius.circular(8.0),
                                     )
                                   ),
-                                  child: Text("${snapshot.data[index]['name']}" ,
-                                    style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white,fontSize: 20),).tr()),
+                                  child: FutureBuilder(
+                                    future: GoogleTranslator().translate(snapshot.data[index]['name'],to: context.locale.languageCode),
+                                    builder: (context,AsyncSnapshot<Translation> trans){
+                                      if(trans.connectionState == ConnectionState.waiting){
+                                        return Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      }
+
+                                      return Text("${trans.data!.text}" ,
+                                        style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white,fontSize: 20),).tr();
+                                    },
+                                  )),
                             ),
                           );
                         });

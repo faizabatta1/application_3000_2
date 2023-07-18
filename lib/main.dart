@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -11,11 +13,14 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:zainlak_tech/Constant/AppColor.dart';
 import 'package:zainlak_tech/Screen/Ui/SplachScreen.dart';
 import 'package:zainlak_tech/Services/users.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'Screen/Ui/no_network_screen.dart';
 
 
 
@@ -156,11 +161,16 @@ Future<void> main() async {
 
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   final String? token;
   const MyApp({super.key,required this.token});
 
-  // This widget is the root of your application.
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+enum PageRouteAnimation { Fade, Scale, Rotate, Slide, SlideBottomTop }
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(builder: ( BuildContext, Widget ){
@@ -177,7 +187,7 @@ class MyApp extends StatelessWidget {
             )
 
           ),
-          home: SplachScreen(token:token)
+          home: SplachScreen(token:widget.token)
       );
     });
   }

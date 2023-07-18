@@ -1,13 +1,21 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:zainlak_tech/Constant/AppColor.dart';
 import 'package:zainlak_tech/Screen/Ui/BookingScreen.dart';
 import 'package:zainlak_tech/Screen/Ui/FavouriteScreen.dart';
 import 'package:zainlak_tech/Screen/Ui/HomeScreen.dart';
 import 'package:zainlak_tech/Screen/Ui/MoreScreen.dart';
 import 'package:zainlak_tech/Screen/Ui/ProfileScreen.dart';
+
+import 'no_network_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -17,6 +25,65 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  late StreamSubscription<ConnectivityResult> connectivitySubscription;
+
+  final navigatorKey = GlobalKey<NavigatorState>();
+
+
+
+  @override
+  void initState() {
+    super.initState();
+    init();
+  }
+
+  @override
+  void setState(fn) {
+    if (mounted) super.setState(fn);
+    connectivitySubscription.cancel();
+  }
+
+
+  void toast(String? value,
+      {ToastGravity? gravity,
+        length = Toast.LENGTH_SHORT,
+        Color? bgColor,
+        Color? textColor,
+        bool print = false}) {
+    if (value!.isEmpty || (!kIsWeb && Platform.isLinux)) {
+    } else {
+      Fluttertoast.showToast(
+        msg: value,
+        gravity: gravity,
+        toastLength: length,
+        backgroundColor: bgColor,
+        textColor: textColor,
+        timeInSecForIosWeb: 2,
+      );
+    }
+  }
+  bool isCurrentlyOnNoInternet = false;
+
+  void init() async {
+    connectivitySubscription = Connectivity().onConnectivityChanged.listen((e) {
+      if (e == ConnectivityResult.none) {
+        isCurrentlyOnNoInternet = true;
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => NoInternetScreen())
+        );
+
+        print("dissss");
+      } else {
+        if (isCurrentlyOnNoInternet) {
+          Navigator.pop(context);
+          isCurrentlyOnNoInternet = false;
+          print("no int");
+          toast('Internet is connected.');
+        }
+      }
+    });
+  }
+
   int pageIndex = 0;
   List<Widget> screens = [
     HomeScreen(),

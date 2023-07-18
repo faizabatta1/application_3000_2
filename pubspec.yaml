@@ -47,10 +47,15 @@ dependencies:
 
   easy_localization: ^3.0.2
   translator: ^0.1.7
+  package_info_plus:
+  connectivity_plus:
   provider: ^6.0.5
   firebase_messaging: ^14.2.1
+  flutter_vector_icons:
   flutter_local_notifications: ^13.0.0
   permission_handler: ^10.2.0
+  flutter_staggered_animations:
+  fluttertoast:
   font_awesome_flutter: ^10.5.0
   auto_size_text:
   flutter_localizations:

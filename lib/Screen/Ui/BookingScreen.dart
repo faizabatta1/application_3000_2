@@ -53,10 +53,10 @@ class _BookingScreenState extends State<BookingScreen> {
                             .getString('user');
                         Map<String, dynamic> user = jsonDecode(decoded!);
 
-                        return FutureBuilder(
+                        return FutureBuilder<({ List<dynamic> reservations, String? errorMessage })>(
                           future: ReservationService.getUserReservations(
                               user['_id']),
-                          builder: (context, AsyncSnapshot rss) {
+                          builder: (context, AsyncSnapshot<({ List<dynamic> reservations, String? errorMessage })> rss) {
                             if (rss.connectionState == ConnectionState.waiting) {
                               return Center(
                                 child: CircularProgressIndicator(),
@@ -64,7 +64,7 @@ class _BookingScreenState extends State<BookingScreen> {
                             } else if (rss.connectionState ==
                                 ConnectionState.done) {
                               if (rss.data != null) {
-                                return rss.data.isEmpty
+                                return rss.data!.reservations.isEmpty
                                     ? Center(
                                   child: Text(
                                     'There Are No Bookings Yet',
@@ -74,7 +74,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                   ).tr(),
                                 )
                                     : ListView.builder(
-                                  itemCount: rss.data.length,
+                                  itemCount: rss.data!.reservations.length,
                                   itemBuilder: (context, index) {
                                     return Padding(
                                       padding: const EdgeInsets.only(
@@ -88,7 +88,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                               builder: (context) =>
                                                   BookingDetailsScreen(
                                                     bookingData:
-                                                    rss.data[index],
+                                                    rss.data!.reservations[index],
                                                   ),
                                             ),
                                           );
@@ -116,7 +116,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                                   image: DecorationImage(
                                                     fit: BoxFit.cover,
                                                     image: CachedNetworkImageProvider(
-                                                      rss.data[index]['technicianId']['image'],
+                                                      rss.data!.reservations[index]['technicianId']['image'],
                                                     ),
                                                   ),
                                                   borderRadius: BorderRadius.circular(12.0),
@@ -130,7 +130,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                     children: [
                                                       Text(
-                                                        "${rss.data[index]['technicianId']['category']['name']}",
+                                                        "${rss.data!.reservations[index]['technicianId']['category']['name']}",
                                                         style: TextStyle(
                                                           fontWeight: FontWeight.bold,
                                                           fontSize: 18,
@@ -138,7 +138,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                                       ),
                                                       SizedBox(height: 6),
                                                       Text(
-                                                        "${rss.data[index]['technicianId']['name']}",
+                                                        "${rss.data!.reservations[index]['technicianId']['name']}",
                                                         style: TextStyle(
                                                           fontSize: 16,
                                                           color: Colors.grey,
@@ -151,7 +151,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                               GestureDetector(
                                                 onTap: () {
                                                   _showConfirmationDialog(
-                                                      rss.data[index]['_id']);
+                                                      rss.data!.reservations[index]['_id']);
                                                 },
                                                 child: Container(
                                                   width: 40,

@@ -14,6 +14,7 @@ import 'package:zainlak_tech/Services/reservations.dart';
 import 'package:zainlak_tech/Services/users.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:zainlak_tech/main.dart';
 
 import '../../Auth/LoginScreen.dart';
 
@@ -305,8 +306,14 @@ class _employeeProfile extends State<employeeProfile> {
       DateFormat format = DateFormat('MM-dd');
       String newDate = format.format(_date!);
 
-      var data = await ReservationService.createReservation(
+      ({String? message}) result = await ReservationService.createReservation(
           user['_id'], widget.tech['_id'], newDate, _time);
+
+      if(result.message == null){
+        await showFlutterNotification('Booking Status', 'Your Booking Was Created');
+      }else{
+        await showFlutterNotification('Booking Status', 'Your Booking Was Not Created');
+      }
 
       showDialog(
         context: context,
@@ -320,6 +327,7 @@ class _employeeProfile extends State<employeeProfile> {
           );
         },
       );
+
     } catch (error) {
       showDialog(
         context: context,
