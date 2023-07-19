@@ -52,7 +52,7 @@ class BookingDetailsScreen extends StatelessWidget {
               ),
               SizedBox(height: 16),
               Text(
-                'Technician Name:',
+                'technician_name',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -64,7 +64,7 @@ class BookingDetailsScreen extends StatelessWidget {
               ),
               SizedBox(height: 8),
               Text(
-                'Email:',
+                'email',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -76,7 +76,7 @@ class BookingDetailsScreen extends StatelessWidget {
               ),
               SizedBox(height: 8),
               Text(
-                'Phone:',
+                'phone',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -88,7 +88,7 @@ class BookingDetailsScreen extends StatelessWidget {
               ),
               SizedBox(height: 8),
               Text(
-                'Location:',
+                'Location',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -100,7 +100,7 @@ class BookingDetailsScreen extends StatelessWidget {
               ),
               SizedBox(height: 8),
               Text(
-                'Category:',
+                'category',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -112,7 +112,7 @@ class BookingDetailsScreen extends StatelessWidget {
               ),
               SizedBox(height: 8),
               Text(
-                'Subcategory:',
+                'subcategory',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -124,7 +124,7 @@ class BookingDetailsScreen extends StatelessWidget {
               ),
               SizedBox(height: 8),
               Text(
-                'Rating:',
+                'rating',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -142,7 +142,7 @@ class BookingDetailsScreen extends StatelessWidget {
               ),
               SizedBox(height: 8),
               Text(
-                'Price:',
+                'price',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -154,7 +154,7 @@ class BookingDetailsScreen extends StatelessWidget {
               ),
               SizedBox(height: 8),
               Text(
-                'Booking Date:',
+                'booking_date',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -166,7 +166,7 @@ class BookingDetailsScreen extends StatelessWidget {
               ),
               SizedBox(height: 8),
               Text(
-                'Booking Time:',
+                'booking_time',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -178,7 +178,7 @@ class BookingDetailsScreen extends StatelessWidget {
               ),
               SizedBox(height: 8),
               Text(
-                'Status:',
+                'Status',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,

@@ -9,7 +9,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:easy_localization/easy_localization.dart';
+import 'package:easy_localization/easy_localization.dart' show BuildContextEasyLocalizationExtension, StringTranslateExtension, TextTranslateExtension, tr;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -56,101 +56,99 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Stack(
-              alignment: Alignment.bottomLeft,
-              children: [
-                Container(
-                  width: double.infinity,
+            Directionality(
+              textDirection: TextDirection.ltr,
+              child: Container(
+                width: double.infinity,
 
-                  color: Colors.white,
-                  child: GestureDetector(
-                    onTap: (){
-                      Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => ProfileScreen())
-                      );
-                    },
-                    child: Container(
-                      margin: EdgeInsets.only(top: 20),
-                      padding: EdgeInsets.all(8.0),
-                      child: Row(
+                color: Colors.white,
+                child: GestureDetector(
+                  onTap: (){
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => ProfileScreen())
+                    );
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(top: 20),
+                    padding: EdgeInsets.all(8.0),
+                    child: Row(
 
-                        children: [
-                          FutureBuilder(
-                              future: SharedPreferences.getInstance(),
-                              builder: (context,AsyncSnapshot snapshot){
-                                if(snapshot.data != null){
-                                  String? decoded = (snapshot.data as SharedPreferences).getString('user');
-                                  Map<String,dynamic> user = jsonDecode(decoded!);
-                                  return Row(
-                                    children: [
-                                      Container(
-                                        width: 40,
-                                        height: 40,
-                                        decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                            image: CachedNetworkImageProvider(user['image']),
-                                            fit: BoxFit.cover
-                                          ),
-                                          borderRadius: BorderRadius.circular(40)
+                      children: [
+                        FutureBuilder(
+                            future: SharedPreferences.getInstance(),
+                            builder: (context,AsyncSnapshot snapshot){
+                              if(snapshot.data != null){
+                                String? decoded = (snapshot.data as SharedPreferences).getString('user');
+                                Map<String,dynamic> user = jsonDecode(decoded!);
+                                return Row(
+                                  children: [
+                                    Container(
+                                      width: 40,
+                                      height: 40,
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image: CachedNetworkImageProvider(user['image']),
+                                          fit: BoxFit.cover
                                         ),
+                                        borderRadius: BorderRadius.circular(40)
                                       ),
-                                      SizedBox(width: 8,),
-                                      Text("${user['name']}",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
-                                    ],
-                                  );
-                                }
-                                return Text('');
-                              }
-                          ),
-                          SizedBox(width: 8.0,),
-                          Expanded(
-                            flex: 1,
-                            child: SizedBox(
-                              height: 40,
-                              child: TextField(
-
-
-                                keyboardType: TextInputType.text,
-                                readOnly: true,
-                                onTap: () async{
-                                  List technicians = await TechnicianService.getAllTechnicians();
-
-                                  await showSearch(
-                                    context: context,
-                                    delegate: TechnicianSearchDelegate(technicians: technicians),
-                                  );
-                                },
-                                style: TextStyle(color: Colors.black),
-                                decoration: InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    fillColor: Colors.black,
-                                    prefixText: 'Search'.tr(),
-
-                                    suffixIcon: Icon(Icons.search,color: Colors.black,),
-                                    hintStyle: TextStyle(color: Colors.black),
-                                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black),
-
                                     ),
-                                    focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black))
-                                ),
+                                    SizedBox(width: 8,),
+                                    Text("${user['name']}",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
+                                  ],
+                                );
+                              }
+                              return Text('');
+                            }
+                        ),
+                        SizedBox(width: 8.0,),
+                        Expanded(
+                          flex: 1,
+                          child: SizedBox(
+                            height: 40,
+                            child: TextField(
 
+
+                              keyboardType: TextInputType.text,
+                              readOnly: true,
+                              onTap: () async{
+                                List technicians = await TechnicianService.getAllTechnicians();
+
+                                await showSearch(
+                                  context: context,
+                                  delegate: TechnicianSearchDelegate(technicians: technicians),
+                                );
+                              },
+                              style: TextStyle(color: Colors.black),
+                              decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  fillColor: Colors.black,
+                                  prefixText: 'Search'.tr(),
+
+                                  suffixIcon: Icon(Icons.search,color: Colors.black,),
+                                  hintStyle: TextStyle(color: Colors.black),
+                                  enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black),
+
+                                  ),
+                                  focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black))
                               ),
+
                             ),
                           ),
-                          SizedBox(width: 8.0,),
-                          GestureDetector(
-                            onTap: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context){
-                                return NotificationsScreen();
-                              }));
-                            },
-                              child: Icon(Icons.notifications_outlined,color: Colors.black,)),
-                        ],
-                      ),
+                        ),
+                        SizedBox(width: 8.0,),
+                        GestureDetector(
+                          onTap: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context){
+                              return NotificationsScreen();
+                            }));
+                          },
+                            child: Icon(Icons.notifications_outlined,color: Colors.black,)),
+                      ],
                     ),
                   ),
                 ),
-              ],
+              ),
             ),
 
             Container(
@@ -280,7 +278,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               NavigateToDetailsScreen(snapshot.data[index]['_id'],snapshot.data[index]['name']);
                             },
                             child: Container(
-                              height: 100,
+                              height: 140,
                               margin: EdgeInsets.only(top: 12.0),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8.0),
@@ -310,7 +308,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       bottomRight: Radius.circular(8.0),
                                     )
                                   ),
-                                  child: Text("${snapshot.data[index]['name']}" ,
+                                  child: Text("${context.locale.languageCode == 'en' ? snapshot.data[index]['name'] : snapshot.data[index]['nameAr']}" ,
                                     style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white,fontSize: 20),).tr()),
                             ),
                           );

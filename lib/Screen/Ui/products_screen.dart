@@ -17,22 +17,14 @@ class _ProductsScreenState extends State<ProductsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(60),
-        child: Container(
-          color: AppColor.AppColors,
-          alignment: Alignment.centerLeft,
-          child: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(
-              Icons.arrow_back_ios,
-              size: 30,
-              color: Colors.white,
-            ),
-          ),
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: (){
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back_ios,size: 30, color: Colors.white,),
         ),
+        backgroundColor: Colors.black,
       ),
       body: FutureBuilder(
         future: PopularTechnicianService.getAllPopularTechnicians(),

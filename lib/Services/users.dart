@@ -249,7 +249,7 @@ class UserService {
     try{
       final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
       String token = sharedPreferences.getString('token')!;
-      final Uri uri = Uri.parse("$baseUrl/users/user/notifications");
+      final Uri uri = Uri.parse("$baseUrl/notifications/user");
 
       http.Response response = await http.get(uri,headers: {
         'token': token
@@ -260,6 +260,40 @@ class UserService {
       return (notifications : notifications, errorMessage: null);
     }catch(error){
       return (notifications : [], errorMessage: "");
+    }
+  }
+
+  static Future<bool> deleteUserNotification({ required String id }) async{
+    try{
+      final Uri uri = Uri.parse("$baseUrl/notifications/$id");
+      http.Response response = await http.delete(uri);
+
+      return response.statusCode == 200;
+    }catch(error){
+      return false;
+    }
+  }
+
+  static Future<bool> isFavoriteTechnician({required technicianId}) async{
+    try{
+      final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+      String token = sharedPreferences.getString('token')!;
+      final Uri uri = Uri.parse("$baseUrl/users/user/favorites/isFavorite");
+      print(technicianId);
+      http.Response response = await http.get(uri,headers: {
+        'token': token,
+        'technicianId':technicianId
+      });
+
+      if(response.statusCode == 200){
+        return true;
+      }else if(response.statusCode == 404){
+        return false;
+      }else{
+        return false;
+      }
+    }catch(error){
+      return false;
     }
   }
 }

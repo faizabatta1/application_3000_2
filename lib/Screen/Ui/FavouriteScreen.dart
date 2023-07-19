@@ -138,7 +138,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                                                     ),
                                                     SizedBox(height: 4),
                                                     Text(
-                                                      "${snapshot.data!.techs[index]['category']['name']}",
+                                                      "${context.locale.languageCode == 'en' ? snapshot.data!.techs[index]['category']['name'] : snapshot.data!.techs[index]['category']['nameAr']}",
                                                       style: TextStyle(
                                                         fontSize: 18,
                                                         color: Colors.grey,
@@ -168,7 +168,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                                                             fontSize: 14,
                                                             color: Colors.grey,
                                                           ),
-                                                        ),
+                                                        ).tr(),
                                                       ],
                                                     ),
                                                   ],

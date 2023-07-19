@@ -45,157 +45,147 @@ class _BookingScreenState extends State<BookingScreen> {
                 SizedBox(height: 10),
                 SizedBox(
                   height: 700,
-                  child: FutureBuilder(
-                    future: SharedPreferences.getInstance(),
-                    builder: (context, AsyncSnapshot snapshot) {
-                      if (snapshot.data != null) {
-                        String? decoded =
-                        (snapshot.data as SharedPreferences)
-                            .getString('user');
-                        Map<String, dynamic> user = jsonDecode(decoded!);
+                  child: FutureBuilder<({ List<dynamic> reservations, String? errorMessage })>(
+                      future: ReservationService.getUserReservations(),
+                    builder: (context, AsyncSnapshot<({ List<dynamic> reservations, String? errorMessage })> rss) {
+        if (rss.connectionState == ConnectionState.waiting) {
+        return Center(
+        child: CircularProgressIndicator(),
+        );
+        } else if (rss.connectionState ==
+        ConnectionState.done) {
+        if (rss.data != null) {
+        return rss.data!.reservations.isEmpty
+        ? Center(
+        child: Text(
+        'There Are No Bookings Yet',
+        style: TextStyle(
+        fontSize: 24,
+        ),
+        ).tr(),
+        )
+            : RefreshIndicator(
+        onRefresh: () async{
+        setState((){});
+        },
+        child: ListView.builder(
+        itemCount: rss.data!.reservations.length,
+        itemBuilder: (context, index) {
+        return Padding(
+        padding: const EdgeInsets.only(
+        left: 8.0,
+        top: 12,
+        ),
+        child: GestureDetector(
+        onTap: () {
+        Navigator.of(context).push(
+        MaterialPageRoute(
+        builder: (context) =>
+        BookingDetailsScreen(
+        bookingData:
+        rss.data!.reservations[index],
+        ),
+        ),
+        );
+        },
+        child: Container(
+        decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius:
+        BorderRadius.circular(12.0),
+        boxShadow: [
+        BoxShadow(
+        offset: Offset(0, 3),
+        blurRadius: 6,
+        color: Colors.black.withOpacity(0.1),
+        ),
+        ],
+        ),
+        height: 125,
+        child: Row(
+        children: [
+        Container(
+        width: 100,
+        height: double.infinity,
+        decoration: BoxDecoration(
+        image: DecorationImage(
+        fit: BoxFit.cover,
+        image: CachedNetworkImageProvider(
+        rss.data!.reservations[index]['technicianId']['image'],
+        ),
+        ),
+        borderRadius: BorderRadius.circular(12.0),
+        ),
+        ),
+        SizedBox(width: 10),
+        Expanded(
+        child: Padding(
+        padding: const EdgeInsets.only(top: 20),
+        child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+        AutoSizeText(
+        "code: ${rss.data!.reservations[index]['_id']}",
+        style: TextStyle(
+        fontWeight: FontWeight.bold,
+        fontSize: 18,
+        ),maxLines:1
+        ),
+        Text(
+        "${context.locale.languageCode == 'en' ? rss.data!.reservations[index]['technicianId']['category']['name'] : rss.data!.reservations[index]['technicianId']['category']['nameAr']}",
+        style: TextStyle(
+        fontWeight: FontWeight.bold,
+        fontSize: 18,
+        ),
+        ),
+        SizedBox(height: 6),
+        Text(
+        "${rss.data!.reservations[index]['technicianId']['name']}",
+        style: TextStyle(
+        fontSize: 16,
+        color: Colors.grey,
+        ),
+        ),
 
-                        return FutureBuilder<({ List<dynamic> reservations, String? errorMessage })>(
-                          future: ReservationService.getUserReservations(
-                              user['_id']),
-                          builder: (context, AsyncSnapshot<({ List<dynamic> reservations, String? errorMessage })> rss) {
-                            if (rss.connectionState == ConnectionState.waiting) {
-                              return Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            } else if (rss.connectionState ==
-                                ConnectionState.done) {
-                              if (rss.data != null) {
-                                return rss.data!.reservations.isEmpty
-                                    ? Center(
-                                  child: Text(
-                                    'There Are No Bookings Yet',
-                                    style: TextStyle(
-                                      fontSize: 24,
-                                    ),
-                                  ).tr(),
-                                )
-                                    : ListView.builder(
-                                  itemCount: rss.data!.reservations.length,
-                                  itemBuilder: (context, index) {
-                                    return Padding(
-                                      padding: const EdgeInsets.only(
-                                        left: 8.0,
-                                        top: 12,
-                                      ),
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  BookingDetailsScreen(
-                                                    bookingData:
-                                                    rss.data!.reservations[index],
-                                                  ),
-                                            ),
-                                          );
-                                        },
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius:
-                                            BorderRadius.circular(12.0),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                offset: Offset(0, 3),
-                                                blurRadius: 6,
-                                                color: Colors.black.withOpacity(0.1),
-                                              ),
-                                            ],
-                                          ),
-                                          height: 125,
-                                          child: Row(
-                                            children: [
-                                              Container(
-                                                width: 100,
-                                                height: double.infinity,
-                                                decoration: BoxDecoration(
-                                                  image: DecorationImage(
-                                                    fit: BoxFit.cover,
-                                                    image: CachedNetworkImageProvider(
-                                                      rss.data!.reservations[index]['technicianId']['image'],
-                                                    ),
-                                                  ),
-                                                  borderRadius: BorderRadius.circular(12.0),
-                                                ),
-                                              ),
-                                              SizedBox(width: 10),
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: const EdgeInsets.only(top: 20),
-                                                  child: Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: [
-                      AutoSizeText(
-                      "code: ${rss.data!.reservations[index]['_id']}",
-                      style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                      ),maxLines:1
-                      ),
-                                                      Text(
-                                                        "${rss.data!.reservations[index]['technicianId']['category']['name']}",
-                                                        style: TextStyle(
-                                                          fontWeight: FontWeight.bold,
-                                                          fontSize: 18,
-                                                        ),
-                                                      ),
-                                                      SizedBox(height: 6),
-                                                      Text(
-                                                        "${rss.data!.reservations[index]['technicianId']['name']}",
-                                                        style: TextStyle(
-                                                          fontSize: 16,
-                                                          color: Colors.grey,
-                                                        ),
-                                                      ),
+        Text('${rss.data!.reservations[index]['date']}  ${rss.data!.reservations[index]['time']}${int.parse(rss.data!.reservations[index]['time']) <= 12 ? "AM" : "PM"}   ${rss.data!.reservations[index]['status'].toString().tr()}',style:TextStyle(
+        color:rss.data!.reservations[index]['status'] == "pending" ? Colors.red : Colors.green
+        ))
+        ],
+        ),
+        ),
+        ),
+        GestureDetector(
+        onTap: () {
+        _showConfirmationDialog(
+        rss.data!.reservations[index]['_id']);
+        },
+        child: Container(
+        width: 40,
+        height: 40,
+        decoration: BoxDecoration(
+        color: Colors.red,
+        shape: BoxShape.circle,
+        ),
+        child: Icon(
+        Icons.delete,
+        color: Colors.white,
+        ),
+        ),
+        ),
+        ],
+        ),
+        ),
+        ),
+        );
+        },
+        ),
+        );
+        }
+        }
 
-                                                      Text('${rss.data!.reservations[index]['date']}  ${rss.data!.reservations[index]['time']}${int.parse(rss.data!.reservations[index]['time']) <= 12 ? "AM" : "PM"}   ${rss.data!.reservations[index]['status']}',style:TextStyle(
-                      color:rss.data!.reservations[index]['status'] == "pending" ? Colors.red : Colors.green
-                      ))
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                              GestureDetector(
-                                                onTap: () {
-                                                  _showConfirmationDialog(
-                                                      rss.data!.reservations[index]['_id']);
-                                                },
-                                                child: Container(
-                                                  width: 40,
-                                                  height: 40,
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.red,
-                                                    shape: BoxShape.circle,
-                                                  ),
-                                                  child: Icon(
-                                                    Icons.delete,
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                );
-                              }
-                            }
-
-                            return Text('');
-                          },
-                        );
-                      }
-
-                      return Text('');
-                    },
-                  ),
+        return Text('');
+        },
+        ),
                 ),
               ],
             ),

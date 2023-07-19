@@ -45,14 +45,10 @@ class _employeeProfile extends State<employeeProfile> {
   int _time = 0;
   bool _isFavorite = false;
   void detectIsFavorite()async{
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    String? decoded = sharedPreferences.getString('user');
-    Map<String,dynamic> user = jsonDecode(decoded!);
-    if((user['favorites'] as List).contains(widget.tech['_id'])){
-      setState(() {
-        _isFavorite = true;
-      });
-    }
+    bool isFavorite = await UserService.isFavoriteTechnician(technicianId: widget.tech['_id']);
+    setState(() {
+      _isFavorite = isFavorite;
+    });
   }
 
   @override
@@ -192,13 +188,9 @@ class _employeeProfile extends State<employeeProfile> {
                                       var decoded = shared.getString('user');
                                       var user = jsonDecode(decoded!);
                                       if(_isFavorite){
-                                        List newT = await UserService.deleteFavoriteTech(user['_id'], widget.tech['_id']);
-                                        user['favorites'] = newT;
-                                        await shared.setString('user', jsonEncode(user));
+                                        await UserService.deleteFavoriteTech(user['_id'], widget.tech['_id']);
                                       }else{
-                                        List newX = await UserService.createFavoriteTech(user['_id'], widget.tech['_id']);
-                                        user['favorites'] = newX;
-                                        await shared.setString('user', jsonEncode(user));
+                                        await UserService.createFavoriteTech(user['_id'], widget.tech['_id']);
                                       }
                                       setState(() {
                                         _isFavorite = !_isFavorite;
@@ -310,23 +302,33 @@ class _employeeProfile extends State<employeeProfile> {
           user['_id'], widget.tech['_id'], newDate, _time);
 
       if(result.message == null){
-        await showFlutterNotification('Booking Status', 'Your Booking Was Created');
+        await showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) {
+            return AnimatedDialog(
+              title: 'Booking Successful'.tr(),
+              icon: Icons.check_circle,
+              iconColor: Colors.green,
+              backgroundColor: AppColor.AppColors,
+            );
+          },
+        );
       }else{
-        await showFlutterNotification('Booking Status', 'Your Booking Was Not Created');
-      }
+        await showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) {
+            return AnimatedDialog(
+              title: result.message!,
+              icon: Icons.close,
+              iconColor: Colors.red,
+              backgroundColor: Colors.black,
+            );
+          },
+        ); }
 
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) {
-          return AnimatedDialog(
-            title: 'Booking Successful'.tr(),
-            icon: Icons.check_circle,
-            iconColor: Colors.green,
-            backgroundColor: AppColor.AppColors,
-          );
-        },
-      );
+
 
     } catch (error) {
       showDialog(
@@ -334,7 +336,7 @@ class _employeeProfile extends State<employeeProfile> {
         barrierDismissible: false,
         builder: (context) {
           return AnimatedDialog(
-            title: 'Booking Failed'.tr(),
+            title: 'Booking Failed',
             icon: Icons.close,
             iconColor: Colors.red,
             backgroundColor: Colors.white,

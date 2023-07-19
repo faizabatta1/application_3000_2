@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ReservationService {
   static const String baseUrl = 'https://technicians.onrender.com'; // Replace with your API base URL
@@ -13,7 +14,7 @@ class ReservationService {
         'userId': userId,
         'technicianId': technicianId,
         'date': date,
-        'time':time
+        'time':time.toString()
       }),
     );
 
@@ -22,7 +23,7 @@ class ReservationService {
     if (response.statusCode == 201) {
       return (message: null);
     } else{
-      return (message: "Something Went Wrong");
+      return (message: response.body);
     }
   }
 
@@ -49,10 +50,15 @@ class ReservationService {
     }
   }
 
-  static Future<({ List<dynamic> reservations, String? errorMessage })> getUserReservations(String userId) async {
+  static Future<({ List<dynamic> reservations, String? errorMessage })> getUserReservations() async {
     try {
       // Make API request to get user reservations
-      final response = await http.get(Uri.parse('https://technicians.onrender.com/reservations/user/$userId'));
+      final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+      final String token = sharedPreferences.getString('token')!;
+      final response = await http.get(Uri.parse('https://technicians.onrender.com/reservations/user'),headers: {
+        'token': token
+      });
+
 
       if (response.statusCode == 200) {
         // Parse response JSON
