@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -184,13 +185,10 @@ class _employeeProfile extends State<employeeProfile> {
                                   alignment: Alignment.centerRight,
                                   child: IconButton(
                                     onPressed: ()async{
-                                      SharedPreferences shared = await SharedPreferences.getInstance();
-                                      var decoded = shared.getString('user');
-                                      var user = jsonDecode(decoded!);
                                       if(_isFavorite){
-                                        await UserService.deleteFavoriteTech(user['_id'], widget.tech['_id']);
+                                        await UserService.deleteFavoriteTech(widget.tech['_id']);
                                       }else{
-                                        await UserService.createFavoriteTech(user['_id'], widget.tech['_id']);
+                                        await UserService.createFavoriteTech(widget.tech['_id']);
                                       }
                                       setState(() {
                                         _isFavorite = !_isFavorite;
@@ -292,14 +290,10 @@ class _employeeProfile extends State<employeeProfile> {
   }
   Future<void> bookReservation() async {
     try {
-      SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-      String? decoded = sharedPreferences.getString('user');
-      Map<String, dynamic> user = jsonDecode(decoded!);
       DateFormat format = DateFormat('MM-dd');
       String newDate = format.format(_date!);
 
-      ({String? message}) result = await ReservationService.createReservation(
-          user['_id'], widget.tech['_id'], newDate, _time);
+      ({String? message}) result = await ReservationService.createReservation(widget.tech['_id'], newDate, _time);
 
       if(result.message == null){
         await showDialog(
@@ -432,13 +426,13 @@ class _AnimatedDialogState extends State<AnimatedDialog>
                       size: 80,
                     ),
                     SizedBox(height: 20),
-                    Text(
+                    AutoSizeText(
                       widget.title,
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
-                      ),
+                      ),maxLines: 1,
                     ),
                     SizedBox(height: 20),
                     ElevatedButton(

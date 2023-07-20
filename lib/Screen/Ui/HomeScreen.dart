@@ -16,6 +16,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:translator/translator.dart';
+import 'package:zainlak_tech/Screen/Ui/SplachScreen.dart';
+import 'package:zainlak_tech/Services/users.dart';
 
 import '../../Constant/AppColor.dart';
 import '../../Services/category.dart';
@@ -37,11 +39,27 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 
+  void validateToken() async{
+    bool isValidToken = await UserService.validateToken();
+    if(!isValidToken){
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Your Session Has Ended, Login Again'),duration: Duration(seconds: 4),)
+      );
+
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => SplachScreen(token: null))
+      );
+    }
+  }
+
+      @override
+  void initState() {
+    super.initState();
+    validateToken();
+  }
 
 
 
-
-  @override
 
       void NavigateToDetailsScreen (String id,String name){
         Navigator.push(context, MaterialPageRoute(builder: (context,){
@@ -49,6 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
         }));
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
 
@@ -75,11 +94,22 @@ class _HomeScreenState extends State<HomeScreen> {
 
                       children: [
                         FutureBuilder(
-                            future: SharedPreferences.getInstance(),
+                            future: UserService.getUser(),
                             builder: (context,AsyncSnapshot snapshot){
+                              if(snapshot.connectionState == ConnectionState.waiting){
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+
+                              if(snapshot.hasError){
+                                return Center(
+                                  child: Icon(Icons.error_outline,size: 30,color: Colors.black,),
+                                );
+                              }
+
                               if(snapshot.data != null){
-                                String? decoded = (snapshot.data as SharedPreferences).getString('user');
-                                Map<String,dynamic> user = jsonDecode(decoded!);
+                                Map user = snapshot.data;
                                 return Row(
                                   children: [
                                     Container(

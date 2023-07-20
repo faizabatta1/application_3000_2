@@ -137,19 +137,6 @@ Future<void> main() async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   String? token = sharedPreferences.getString('token');
 
-  var user;
-  if(token != null){
-    var decoded = sharedPreferences.getString('user');
-     user = jsonDecode(decoded!);
-    Map? userData = await UserService.getUser(user['_id']);
-    if(userData != null){
-      await sharedPreferences.setString('user', jsonEncode(userData));
-    }
-  }
-
-
-
-
 
 
 
@@ -168,7 +155,6 @@ class MyApp extends StatefulWidget {
   @override
   State<MyApp> createState() => _MyAppState();
 }
-enum PageRouteAnimation { Fade, Scale, Rotate, Slide, SlideBottomTop }
 
 class _MyAppState extends State<MyApp> {
   @override
@@ -192,5 +178,4 @@ class _MyAppState extends State<MyApp> {
     });
   }
 }
-
 

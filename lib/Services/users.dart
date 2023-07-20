@@ -99,7 +99,7 @@ class UserService {
         print(data);
         SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
         await sharedPreferences.setString('token', data['token']);
-        await sharedPreferences.setString('user', jsonEncode(data['user']));
+        // await sharedPreferences.setString('user', jsonEncode(data['user']));
         return data;
       } else {
         return null;
@@ -134,13 +134,19 @@ class UserService {
     }
   }
 
-  static Future<List<dynamic>> createFavoriteTech(String userId, String id) async {
+  static Future<List<dynamic>> createFavoriteTech(String id) async {
     final url = Uri.parse('https://technicians.onrender.com/users/favorites/create');
-    final headers = {'Content-Type': 'application/json'};
-    final body = {'userId': userId, 'id': id};
+    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    final String token = sharedPreferences.getString('token')!;
+    final headers = {
+      'Content-Type': 'application/json; charset=utf-8',
+      'token':token
+    };
 
     try {
-      final response = await http.post(url, headers: headers, body: jsonEncode(body));
+      final response = await http.post(url, headers: headers,body: jsonEncode({
+        'id':id
+      }));
 
       if (response.statusCode == 200) {
         final List<dynamic> techs = jsonDecode(response.body);
@@ -153,13 +159,17 @@ class UserService {
     }
   }
 
-  static Future<List<dynamic>> deleteFavoriteTech(String userId, String id) async {
+  static Future<List<dynamic>> deleteFavoriteTech(String id) async {
     final url = Uri.parse('https://technicians.onrender.com/users/favorites/$id');
-    final headers = {'Content-Type': 'application/json'};
-    final body = {'userId': userId};
+    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    final String token = sharedPreferences.getString('token')!;
+    final headers = {
+      'Content-Type': 'application/json',
+      'token':token
+    };
 
     try {
-      final response = await http.delete(url, headers: headers, body: jsonEncode(body));
+      final response = await http.delete(url, headers: headers);
 
       if (response.statusCode == 200) {
         final List<dynamic> techs = jsonDecode(response.body);
@@ -173,10 +183,15 @@ class UserService {
   }
 
   // Method to get a user by ID (requires user's own ID or admin role)
-  static Future<Map?> getUser(String userId) async {
-    final url = Uri.parse('$baseUrl/users/$userId');
+  static Future<Map?> getUser() async {
+    final url = Uri.parse('$baseUrl/users/user');
+    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    final String token = sharedPreferences.getString('token')!;
     final response = await http.get(
       url,
+      headers: {
+        'token': token
+      }
     );
 
     if (response.statusCode == 200) {
@@ -290,6 +305,27 @@ class UserService {
       }else if(response.statusCode == 404){
         return false;
       }else{
+        return false;
+      }
+    }catch(error){
+      return false;
+    }
+  }
+
+  static Future validateToken() async{
+    try{
+      final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+      String token = sharedPreferences.getString('token')!;
+      final Uri uri = Uri.parse("$baseUrl/users/token/validate");
+      http.Response response = await http.get(uri,headers: {
+        'token': token,
+      });
+
+
+      if(response.statusCode == 200){
+        return true;
+      }else{
+        await sharedPreferences.remove('token');
         return false;
       }
     }catch(error){

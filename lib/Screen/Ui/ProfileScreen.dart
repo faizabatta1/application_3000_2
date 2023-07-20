@@ -12,6 +12,7 @@ import 'package:zainlak_tech/Screen/Ui/MainScreen.dart';
 import 'package:zainlak_tech/Screen/Ui/SplachScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:zainlak_tech/Services/users.dart';
 
 class ProfileScreen extends StatefulWidget {
     const ProfileScreen({Key? key}) : super(key: key);
@@ -42,12 +43,23 @@ class ProfileScreen extends StatefulWidget {
           child: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.only(top: 0),
-              child: FutureBuilder<SharedPreferences>(
-                future: SharedPreferences.getInstance(),
+              child: FutureBuilder(
+                future: UserService.getUser(),
                 builder: (context,AsyncSnapshot snapshot){
+                  if(snapshot.connectionState == ConnectionState.waiting){
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+
+                  if(snapshot.hasError){
+                    return Center(
+                      child: Icon(Icons.error_outline,size: 30,color: Colors.black,),
+                    );
+                  }
+
                   if(snapshot.data != null){
-                    String? decoded = (snapshot.data as SharedPreferences).getString('user');
-                    Map<String,dynamic> user = jsonDecode(decoded!);
+                    Map user = snapshot.data;
 
                     return Stack(
 

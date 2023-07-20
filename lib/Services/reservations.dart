@@ -6,12 +6,18 @@ class ReservationService {
   static const String baseUrl = 'https://technicians.onrender.com'; // Replace with your API base URL
 
   // Create a new reservation
-  static Future<({ String? message })> createReservation(String userId, String technicianId, String date, int time) async {
+  static Future<({ String? message })> createReservation(String technicianId, String date, int time) async {
+
+    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    final String token = sharedPreferences.getString('token')!;
+
     final response = await http.post(
       Uri.parse('$baseUrl/reservations'),
-      headers: {'Content-Type': 'application/json'},
+      headers: {
+        'Content-Type': 'application/json',
+        'token': token
+      },
       body: jsonEncode({
-        'userId': userId,
         'technicianId': technicianId,
         'date': date,
         'time':time.toString()
