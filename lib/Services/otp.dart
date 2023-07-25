@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 
 class OTPService {
   static Future<void> sendResetCode(String email) async {
-    final url = Uri.parse('https://technicians.onrender.com/send-reset-code');
+    final url = Uri.parse('http://154.56.60.119:3000/send-reset-code');
     final response = await http.post(url,headers: {
       'Content-Type':'application/json; charset=utf-8'
     }, body: jsonEncode({'email': email}));
@@ -17,7 +17,7 @@ class OTPService {
   }
 
   static Future<void> verifyResetCode(String email, String code) async {
-    final url = Uri.parse('https://technicians.onrender.com/verify-reset-code');
+    final url = Uri.parse('http://154.56.60.119:3000/verify-reset-code');
     final response = await http.post(url,headers: {
       'Content-Type':'application/json; charset=utf-8'
     }, body: jsonEncode({'email': email, 'code': code}));
@@ -32,7 +32,7 @@ class OTPService {
   }
 
   static Future<void> changePassword(String email, String newPassword) async {
-    final url = Uri.parse('https://technicians.onrender.com/change-password');
+    final url = Uri.parse('http://154.56.60.119:3000/change-password');
     final response = await http.post(url,headers: {
       'Content-Type':'application/json; charset=utf-8'
     }, body: jsonEncode({'email': email, 'newPassword': newPassword}));

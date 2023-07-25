@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserService {
-  static const String baseUrl = 'https://technicians.onrender.com'; // Replace with your API URL
+  static const String baseUrl = 'http://154.56.60.119:3000'; // Replace with your API URL
 
   // Method to send a reset password email
   static Future<String> sendResetPasswordEmail(String email) async {
@@ -65,8 +65,6 @@ class UserService {
       headers: {'Content-Type': 'application/json; charset=utf-8'},
     );
 
-    print(response.statusCode);
-    print("i was printed from here");
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
@@ -113,7 +111,7 @@ class UserService {
   static Future<({ List<dynamic> techs,String? errorMessage })> getAllFavoriteTechnicians() async {
 
     try {
-      final url = Uri.parse('https://technicians.onrender.com/users/user/favorites');
+      final url = Uri.parse('http://154.56.60.119:3000/users/user/favorites');
       final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
       final String token = sharedPreferences.getString('token')!;
       final headers = {
@@ -135,7 +133,7 @@ class UserService {
   }
 
   static Future<List<dynamic>> createFavoriteTech(String id) async {
-    final url = Uri.parse('https://technicians.onrender.com/users/favorites/create');
+    final url = Uri.parse('http://154.56.60.119:3000/users/favorites/create');
     final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     final String token = sharedPreferences.getString('token')!;
     final headers = {
@@ -160,7 +158,7 @@ class UserService {
   }
 
   static Future<List<dynamic>> deleteFavoriteTech(String id) async {
-    final url = Uri.parse('https://technicians.onrender.com/users/favorites/$id');
+    final url = Uri.parse('http://154.56.60.119:3000/users/favorites/$id');
     final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     final String token = sharedPreferences.getString('token')!;
     final headers = {

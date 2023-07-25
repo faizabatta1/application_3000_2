@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ReservationService {
-  static const String baseUrl = 'https://technicians.onrender.com'; // Replace with your API base URL
+  static const String baseUrl = 'http://154.56.60.119:3000'; // Replace with your API base URL
 
   // Create a new reservation
   static Future<({ String? message })> createReservation(String technicianId, String date, int time) async {
@@ -61,7 +61,7 @@ class ReservationService {
       // Make API request to get user reservations
       final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
       final String token = sharedPreferences.getString('token')!;
-      final response = await http.get(Uri.parse('https://technicians.onrender.com/reservations/user'),headers: {
+      final response = await http.get(Uri.parse('http://154.56.60.119:3000/reservations/user'),headers: {
         'token': token
       });
 
