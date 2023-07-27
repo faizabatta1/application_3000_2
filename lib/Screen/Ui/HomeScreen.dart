@@ -246,7 +246,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       viewportFraction: 0.65,
                       aspectRatio: 2.5 / 1,
                       initialPage: 0,
-                      height: 140.0,
+                      height: 120.0,
                       enlargeCenterPage: true,
                       scrollDirection: Axis.horizontal,
                       enableInfiniteScroll: true,
@@ -260,7 +260,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Padding(
               padding: const EdgeInsets.only(left: 12.0),
               child: AutoSizeText("Welcome To Zainlak".tr(),style: TextStyle(
-                fontSize: 26,
+                fontSize: 22,
                 fontWeight: FontWeight.bold
               ),maxLines: 1,),
             ),
@@ -268,7 +268,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Padding(
               padding: const EdgeInsets.only(left: 12.0),
               child: Text("How Can We Help You Today?",style: TextStyle(
-                fontSize: 20
+                fontSize: 18
               ),).tr(),
             ),
 
@@ -309,10 +309,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             },
                             child: Container(
                               width: double.infinity,
-                              height: 140,
+                              height: 100,
                               margin: EdgeInsets.only(top: 12.0),
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(24.0),
+                                borderRadius: BorderRadius.circular(12.0),
                                 color: Colors.white,
                                   image: DecorationImage(
                                       image: CachedNetworkImageProvider(snapshot.data[index]['image']),
@@ -340,7 +340,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     )
                                   ),
                                   child: Text("${context.locale.languageCode == 'en' ? snapshot.data[index]['name'] : snapshot.data[index]['nameAr']}" ,
-                                    style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white,fontSize: 20),).tr()),
+                                    style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white,fontSize: 16),).tr()),
                             ),
                           );
                         });

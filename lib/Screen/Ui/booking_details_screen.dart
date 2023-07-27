@@ -1,11 +1,29 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../Constant/AppColor.dart';
 
 class BookingDetailsScreen extends StatelessWidget {
   final Map<String, dynamic> bookingData;
+
+  void SendMessageByWatsapp()async{
+    if(await canLaunch('https://wa.me/${bookingData['technicianId']['phone']}')){
+      await launch('https://wa.me/${bookingData['technicianId']['phone']}');
+    }
+  }
+  void SendMail()async{
+    String email = 'omarsabry8989@gmail.com';
+    var url =  'mailto:${bookingData['technicianId']['email']}';
+    await launch(url);
+  }
+  void CallPhoneNumber () async{
+    var phoneUrl = 'tel://${bookingData['technicianId']['phone']}';
+
+    await  launch(phoneUrl);
+  }
 
   const BookingDetailsScreen({Key? key, required this.bookingData})
       : super(key: key);
@@ -49,6 +67,37 @@ class BookingDetailsScreen extends StatelessWidget {
                     image: CachedNetworkImageProvider(bookingData['technicianId']['image']),
                   ),
                 ),
+              ),
+              SizedBox(height: 20,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  CircleAvatar(
+                    radius: 25,
+                    backgroundColor: Colors.green,
+                    child: CircleAvatar(
+                      radius: 23,
+                      backgroundColor: Colors.white,
+                      child: IconButton(onPressed: (){
+                        SendMessageByWatsapp();
+                      }, icon:Icon (FontAwesomeIcons.whatsapp,color: Colors.green,)) ,
+                    ),
+                  ),
+
+                  CircleAvatar(
+                    radius: 25,
+                    backgroundColor: Colors.blue,
+                    child: CircleAvatar(
+                      radius: 23,
+                      backgroundColor: Colors.white,
+                      child: IconButton(onPressed: (){
+                        CallPhoneNumber();
+                      }, icon:Icon (Icons.phone,color: Colors.blue,)) ,
+                    ),
+                  ),
+
+
+                ],
               ),
               SizedBox(height: 16),
               Text(

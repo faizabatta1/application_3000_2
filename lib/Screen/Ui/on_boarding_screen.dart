@@ -5,40 +5,46 @@ import 'package:zainlak_tech/Screen/Ui/MainScreen.dart';
 
 class OnboardingScreen extends StatelessWidget {
   final String? token;
-  OnboardingScreen({ required this.token });
+  OnboardingScreen({required this.token});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-      ),
       body: IntroductionScreen(
+        globalBackgroundColor: Colors.white, // Set the background color
         pages: [
           PageViewModel(
-            title: "Welcome to Technicians App",
-            body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            image: Image.asset("assets/icon/logo.jpg",fit: BoxFit.cover,),
+            title: "Welcome to Zain Development App",
+            body: "Your Favorite App To Find Technicians at Low Price",
+            image: _buildImageWidget("assets/choice.png"),
+            decoration: _getPageDecoration(),
           ),
           PageViewModel(
-            title: "Find Jobs Easily",
-            body: "Search and apply for jobs near your location.",
-            image: Image.asset("assets/icon/logo.jpg",fit: BoxFit.cover,),
+            title: "Find Technicians Easily",
+            body: "Search for Technicians Near Your Location",
+            image: _buildImageWidget("assets/clock.png"),
+            decoration: _getPageDecoration(),
           ),
           PageViewModel(
             title: "Get Started Now!",
-            body: "Join our community and start earning.",
-            image: Image.asset("assets/icon/logo.jpg",fit: BoxFit.cover,),
+            body: "Join Our Community and Start Finding Technicians",
+            image: _buildImageWidget("assets/snap.png"),
+            decoration: _getPageDecoration(),
           ),
         ],
         onDone: () {
           // Navigate to the HomeScreen
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => token == null ? LoginScreen() : MainScreen()),
+            MaterialPageRoute(
+              builder: (context) => token == null ? LoginScreen() : MainScreen(),
+            ),
           );
         },
-        done: Text("Get Started"),
+        done: Text(
+          "Get Started",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         showSkipButton: true,
         skip: Text("Skip"),
         next: Icon(Icons.arrow_forward),
@@ -48,5 +54,27 @@ class OnboardingScreen extends StatelessWidget {
       ),
     );
   }
-}
 
+  Widget _buildImageWidget(String imagePath) {
+    return Center(
+      child: Image.asset(
+        imagePath,
+        height: 200,
+        width: 200,
+        fit: BoxFit.contain,
+      ),
+    );
+  }
+
+  PageDecoration _getPageDecoration() {
+    return PageDecoration(
+      titleTextStyle: TextStyle(
+        fontSize: 28.0,
+        fontWeight: FontWeight.bold,
+      ),
+      bodyTextStyle: TextStyle(fontSize: 20.0),
+      imagePadding: EdgeInsets.fromLTRB(0, 40, 0, 0),
+      pageColor: Colors.white,
+    );
+  }
+}

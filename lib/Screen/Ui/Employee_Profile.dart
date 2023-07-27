@@ -65,90 +65,66 @@ class _employeeProfile extends State<employeeProfile> {
     Size size = MediaQuery.of(context).size;
     DateTime Date = DateTime.now();
     return Scaffold(
-      appBar: AppBar(),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 0),
-                  child: Stack(
+      appBar: AppBar(
+        backgroundColor: AppColor.AppColors,
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 0),
+                child: Stack(
 
 
-                      children: [
+                    children: [
 
 
-                        Card(
+                      Card(
 
-                          margin: EdgeInsets.symmetric(vertical: 40,horizontal: 20),
-                          color: Colors.white,
-                          child: Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(height: 30,),
-                                Align( alignment: Alignment.center, child: Text(widget.tech['name'],style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),)),
-                                SizedBox(height: 10,),
-                                Align( alignment: Alignment.center, child: Text('Joined Since',style: TextStyle(fontSize: 17,color: Colors.indigo),).tr(args: [dateFormat.format(DateTime.fromMillisecondsSinceEpoch(int.parse(widget.tech['createdAt'])))])),
-                                SizedBox(height: 20,),
-                                Align(alignment: Alignment.center , child: Text('status',style: TextStyle(fontWeight: FontWeight.bold),).tr(args: [widget.tech['available'] == true ? "available" : "Not available"]),),
+                        margin: EdgeInsets.symmetric(vertical: 40,horizontal: 20),
+                        color: Colors.white,
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(height: 30,),
+                              Align( alignment: Alignment.center, child:
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(widget.tech['name'],style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
+                                  Text(widget.tech['available'] ? "Available" : "Not Available",style: TextStyle(fontWeight: FontWeight.bold,color:widget.tech['available'] ? Colors.green : Colors.red,fontSize: 20),)
+                                ],
+                              )),
+                              SizedBox(height: 10,),
+                              Align( alignment: Alignment.center, child: Text('Joined Since',style: TextStyle(fontSize: 17,color: Colors.indigo),).tr(args: [dateFormat.format(DateTime.fromMillisecondsSinceEpoch(int.parse(widget.tech['createdAt'])))])),
+                              SizedBox(height: 20,),
+                              Align(alignment: Alignment.center  , child: Text('WorkTime').tr(args: [widget.tech['from'],widget.tech['to']]),),
+                              SizedBox(height: 20,),
+                              Align(alignment: Alignment.center, child: Text('Service Price').tr(args: [widget.tech['price'].toString() + " SAR"]),),
+                              SizedBox(height: 20,),
 
-                                SizedBox(height: 20,),
-                                Align(alignment: Alignment.center  , child: Text('WorkTime').tr(args: [widget.tech['from'],widget.tech['to']]),),
-                                SizedBox(height: 20,),
-                                Align(alignment: Alignment.center, child: Text('Service Price').tr(args: [widget.tech['price'].toString()]),),
-                                SizedBox(height: 20,),
-
-                                Divider(thickness: 1,),
-                                SizedBox(height: 40,),
-                                Center(child: Text('تواصل مع الفني',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),).tr()),
-                                SizedBox(height: 20,),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    CircleAvatar(
-                                      radius: 25,
-                                      backgroundColor: Colors.green,
-                                      child: CircleAvatar(
-                                        radius: 23,
-                                        backgroundColor: Colors.white,
-                                        child: IconButton(onPressed: (){
-                                          SendMessageByWatsapp();
-                                        }, icon:Icon (FontAwesomeIcons.whatsapp,color: Colors.green,)) ,
-                                      ),
-                                    ),
-
-                                    CircleAvatar(
-                                      radius: 25,
-                                      backgroundColor: Colors.blue,
-                                      child: CircleAvatar(
-                                        radius: 23,
-                                        backgroundColor: Colors.white,
-                                        child: IconButton(onPressed: (){
-                                          CallPhoneNumber();
-                                        }, icon:Icon (Icons.phone,color: Colors.blue,)) ,
-                                      ),
-                                    ),
-
-
-                                  ],
-                                ),
-                                SizedBox(height: 15,),
-                                Align(
-                                  alignment: Alignment.center,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(bottom: 20,right: 20,left: 20,top: 0),
+                              Divider(thickness: 1,),
+                              SizedBox(height: 40,),
+                              Align(
+                                alignment: Alignment.center,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(bottom: 20,right: 20,left: 20,top: 0),
+                                  child: Visibility(
+                                    visible: widget.tech['available'],
                                     child: MaterialButton(
                                       onPressed: () async{
                                         DateTime? date = await showDatePicker(
                                             context: context,
                                             initialDate: DateTime.now(),
                                             firstDate: DateTime.now(),
-                                            lastDate: DateTime(2024)
+                                            lastDate: DateTime(2024),
+                                          locale: Locale('en','')
                                         );
 
                                         if(date != null){
@@ -168,93 +144,79 @@ class _employeeProfile extends State<employeeProfile> {
 
 
                                       },
+                                      color: AppColor.AppColors,
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
                                           Text('احجز زياره للمنزل',style: TextStyle(color: Colors.white,fontSize: 18),).tr(),
-                                  SizedBox(width: 10,),
-                                  Icon(Icons.bookmark_border,color: Colors.white,)
-                                  ],
-                                ),
-                                      color: AppColor.AppColors,
+                                SizedBox(width: 10,),
+                                Icon(Icons.bookmark_border,color: Colors.white,)
+                                ],
+                              ),
                                     ),
                                   ),
                                 ),
-                                SizedBox(height: 10,),
-                                Align(
-                                  alignment: Alignment.centerRight,
-                                  child: IconButton(
-                                    onPressed: ()async{
-                                      if(_isFavorite){
-                                        await UserService.deleteFavoriteTech(widget.tech['_id']);
-                                      }else{
-                                        await UserService.createFavoriteTech(widget.tech['_id']);
-                                      }
-                                      setState(() {
-                                        _isFavorite = !_isFavorite;
-                                      });
-                                    },
-                                    icon: Icon(Icons.favorite,color: _isFavorite ? Colors.red : Colors.black,),
-                                  ),
+                              ),
+                              SizedBox(height: 10,),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: IconButton(
+                                  onPressed: ()async{
+                                    if(_isFavorite){
+                                      await UserService.deleteFavoriteTech(widget.tech['_id']);
+                                    }else{
+                                      await UserService.createFavoriteTech(widget.tech['_id']);
+                                    }
+                                    setState(() {
+                                      _isFavorite = !_isFavorite;
+                                    });
+                                  },
+                                  icon: Icon(Icons.favorite,color: _isFavorite ? Colors.red : Colors.black,),
                                 ),
-                                Divider(thickness: 1,),
+                              ),
+                              Divider(thickness: 1,),
 
-                                SizedBox(height: 10,),
-
-
-                                SizedBox(height: 10,),
+                              SizedBox(height: 10,),
 
 
-
+                              SizedBox(height: 10,),
 
 
 
-                              ],
-                            ),
+
+
+
+                            ],
                           ),
-
-
                         ),
 
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
 
-                            Container(
-                              width:70 ,
-                              height:70 ,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(50),
-                                  border: Border.all(width: 5,color: Theme.of(context).scaffoldBackgroundColor),
-                                  image: DecorationImage(image: CachedNetworkImageProvider(widget.tech['image']),fit: BoxFit.fill)
-                              ),
-                            )
-                          ],)
-                      ]
-                  ),
+                      ),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+
+                          Container(
+                            width:80 ,
+                            height:80 ,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(50),
+                                border: Border.all(width: 5,color: Theme.of(context).scaffoldBackgroundColor),
+                                image: DecorationImage(image: CachedNetworkImageProvider(widget.tech['image']),fit: BoxFit.fill)
+                            ),
+                          )
+                        ],)
+                    ]
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
-  void SendMessageByWatsapp()async{
-    if(await canLaunch('https://wa.me/${widget.tech['phone']}')){
-      await launch('https://wa.me/${widget.tech['phone']}');
-    }
-  }
-  void SendMail()async{
-    String email = 'omarsabry8989@gmail.com';
-    var url =  'mailto:${widget.tech['email']}';
-    await launch(url);
-  }
-  void CallPhoneNumber () async{
-    var phoneUrl = 'tel://${widget.tech['phone']}';
 
-    await  launch(phoneUrl);
-  }
   void logOut (context){
     showDialog(context: context, builder: (context){
 
