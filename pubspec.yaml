@@ -46,6 +46,7 @@ dependencies:
   flutter_localization: ^0.1.10
 
   easy_localization: ^3.0.2
+  introduction_screen:
   translator: ^0.1.7
   package_info_plus:
   connectivity_plus:

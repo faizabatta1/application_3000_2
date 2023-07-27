@@ -77,10 +77,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
               fontSize: 20,
               color: Colors.white,
             ),
-          ).tr(),
+          ),
           backgroundColor: Colors.red,
         ),
       );
+
+      setState(() {
+        isCreatingAccountLoading = false;
+      });
     }
   }
 

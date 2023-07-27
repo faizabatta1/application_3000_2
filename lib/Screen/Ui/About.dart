@@ -14,7 +14,7 @@ class About extends StatelessWidget {
 
   Future <String> getAbout () async {
     try{
-      http.Response response = await http.get(Uri.parse("http://154.56.60.119:3000/informations/about"));
+      http.Response response = await http.get(Uri.parse("https://adminzaindev.zaindev.com.sa/informations/about"));
       return response.body;
     } catch(error){
       return "error";

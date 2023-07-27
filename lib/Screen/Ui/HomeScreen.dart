@@ -308,14 +308,15 @@ class _HomeScreenState extends State<HomeScreen> {
                               NavigateToDetailsScreen(snapshot.data[index]['_id'],snapshot.data[index]['name']);
                             },
                             child: Container(
+                              width: double.infinity,
                               height: 140,
                               margin: EdgeInsets.only(top: 12.0),
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8.0),
+                                borderRadius: BorderRadius.circular(24.0),
                                 color: Colors.white,
                                   image: DecorationImage(
                                       image: CachedNetworkImageProvider(snapshot.data[index]['image']),
-                                  fit: BoxFit.fill
+                                  fit: BoxFit.cover
                                   ),
                                   boxShadow: [
                                   BoxShadow(
