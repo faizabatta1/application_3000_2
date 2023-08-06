@@ -171,7 +171,8 @@ class _MyAppState extends State<MyApp> {
             appBarTheme: AppBarTheme(
               backgroundColor: Colors.white,
               elevation: 0
-            )
+            ),
+            fontFamily: context.locale.languageCode == 'en' ? 'Space' : 'Cairo'
 
           ),
           home: SplachScreen(token:widget.token)

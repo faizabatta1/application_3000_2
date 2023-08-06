@@ -10,25 +10,44 @@ class OnboardingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+      ),
       body: IntroductionScreen(
-        globalBackgroundColor: Colors.white, // Set the background color
+        globalBackgroundColor: Colors.white,
         pages: [
           PageViewModel(
-            title: "Welcome to Zain Development App",
-            body: "Your Favorite App To Find Technicians at Low Price",
-            image: _buildImageWidget("assets/choice.png"),
+            title: "مرحبا بك في زين التنموية",
+            // body: ,
+            bodyWidget: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+
+                _buildImageWidget("assets/icon/one.jpg"),
+              ],
+            ),decoration: _getPageDecoration(),
+          ),
+          PageViewModel(
+            title: "اعثر علي فنيين بسهولة",
+            // body: ,
+            bodyWidget: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _buildImageWidget("assets/icon/one.jpg"),
+              ],
+            ),
             decoration: _getPageDecoration(),
           ),
           PageViewModel(
-            title: "Find Technicians Easily",
-            body: "Search for Technicians Near Your Location",
-            image: _buildImageWidget("assets/clock.png"),
-            decoration: _getPageDecoration(),
-          ),
-          PageViewModel(
-            title: "Get Started Now!",
-            body: "Join Our Community and Start Finding Technicians",
-            image: _buildImageWidget("assets/snap.png"),
+            title: "ابدأ الان",
+            // body: ,
+            bodyWidget: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _buildImageWidget("assets/icon/one.jpg"),
+              ],
+            ),
             decoration: _getPageDecoration(),
           ),
         ],
@@ -46,7 +65,7 @@ class OnboardingScreen extends StatelessWidget {
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         showSkipButton: true,
-        skip: Text("Skip"),
+        skip: Text("Skip",),
         next: Icon(Icons.arrow_forward),
         dotsDecorator: DotsDecorator(
           activeColor: Theme.of(context).primaryColor,
@@ -56,13 +75,9 @@ class OnboardingScreen extends StatelessWidget {
   }
 
   Widget _buildImageWidget(String imagePath) {
-    return Center(
-      child: Image.asset(
-        imagePath,
-        height: 200,
-        width: 200,
-        fit: BoxFit.contain,
-      ),
+    return Image.asset(
+      imagePath,
+      fit: BoxFit.cover,
     );
   }
 

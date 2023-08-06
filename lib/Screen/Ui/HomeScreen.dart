@@ -28,7 +28,7 @@ import 'Employee_Profile.dart';
 import 'Notification_Screen.dart';
 import 'ProfileScreen.dart';
 import 'no_network_screen.dart';
-
+import 'package:http/http.dart' as http;
 class HomeScreen extends StatefulWidget {
 
   const HomeScreen({Key? key}) : super(key: key);
@@ -38,6 +38,21 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  Future<List> _getAllSliders() async{
+    try{
+      final Uri uri = Uri.parse('https://adminzaindev.zaindev.com.sa/sliders');
+      http.Response response = await http.get(uri);
+
+      if(response.statusCode == 200){
+        return jsonDecode(response.body);
+      }else{
+        return [];
+      }
+    }catch(error){
+      return [];
+    }
+  }
+
 
   void validateToken() async{
     bool isValidToken = await UserService.validateToken();
@@ -204,69 +219,76 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                  child: CarouselSlider(
-                    items: [
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12.0),
-                          image: DecorationImage(
-                            image: CachedNetworkImageProvider(
-                              'https://skywestpropertysolutions.com/wp-content/uploads/2017/05/pexels-photo-175039-1.jpeg',
-                            ),
-                            fit: BoxFit.cover,
+                  child: FutureBuilder<List>(
+                    future: _getAllSliders(),
+                    builder: (BuildContext context,AsyncSnapshot<List> snapshot){
+                      if(snapshot.connectionState == ConnectionState.waiting){
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+
+                      if(snapshot.hasError){
+                        return Center(
+                          child: Text('Something Went Wrong'),
+                        );
+                      }
+
+                      if(snapshot.data != null){
+                        if(snapshot.data!.isEmpty){
+                          return Center(
+                            child: Text('No Items Yet'),
+                          );
+                        }
+
+                        return CarouselSlider(
+                          items: snapshot.data!.map((e){
+                            return Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12.0),
+                                image: DecorationImage(
+                                  image: CachedNetworkImageProvider(
+                                    '${e['link']}',
+                                  ),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                          options: CarouselOptions(
+                            autoPlay: true,
+                            reverse: true,
+                            viewportFraction: 0.65,
+                            aspectRatio: 2.5 / 1,
+                            initialPage: 0,
+                            height: 140.0,
+                            enlargeCenterPage: true,
+                            scrollDirection: Axis.horizontal,
+                            enableInfiniteScroll: true,
                           ),
-                        ),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12.0),
-                          image: DecorationImage(
-                            image: CachedNetworkImageProvider(
-                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpYUhxjdCnVeqa1JH5mpTkeoEWbspKeHdMb2OSUh4dD2HKV3s5z5A_kZ2EkpdNIBwo-ww&usqp=CAU',
-                            ),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12.0),
-                          image: DecorationImage(
-                            image: CachedNetworkImageProvider(
-                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqJ2ezf__b97rc4Hp7Hlog6k-NSuI-leU9aJZBJ8x3LbYT3DVk6Whw5IkN_cOP-yXtWJo&usqp=CAU',
-                            ),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                    ],
-                    options: CarouselOptions(
-                      autoPlay: true,
-                      reverse: true,
-                      viewportFraction: 0.65,
-                      aspectRatio: 2.5 / 1,
-                      initialPage: 0,
-                      height: 120.0,
-                      enlargeCenterPage: true,
-                      scrollDirection: Axis.horizontal,
-                      enableInfiniteScroll: true,
-                    ),
+                        );
+                      }
+
+                      return Container();
+                    },
                   ),
                 ),
               )
               ,
             ),
 
+            SizedBox(height: 12.0,),
+
             Padding(
-              padding: const EdgeInsets.only(left: 12.0),
+              padding: const EdgeInsets.symmetric(horizontal: 12.0),
               child: AutoSizeText("Welcome To Zainlak".tr(),style: TextStyle(
-                fontSize: 22,
+                fontSize: 20,
                 fontWeight: FontWeight.bold
               ),maxLines: 1,),
             ),
 
             Padding(
-              padding: const EdgeInsets.only(left: 12.0),
+              padding: const EdgeInsets.symmetric(horizontal: 12.0),
               child: Text("How Can We Help You Today?",style: TextStyle(
                 fontSize: 18
               ),).tr(),
@@ -309,11 +331,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             },
                             child: Container(
                               width: double.infinity,
-                              height: 100,
+                              height: 120,
                               margin: EdgeInsets.only(top: 12.0),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12.0),
-                                color: Colors.white,
                                   image: DecorationImage(
                                       image: CachedNetworkImageProvider(snapshot.data[index]['image']),
                                   fit: BoxFit.cover
@@ -333,7 +354,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                 padding: EdgeInsets.all(4.0),
                                   decoration: BoxDecoration(
-                                    color: Colors.black.withOpacity(0.1),
+                                    color: Colors.black.withOpacity(0.5),
                                     borderRadius: BorderRadius.only(
                                       bottomLeft: Radius.circular(8.0),
                                       bottomRight: Radius.circular(8.0),
